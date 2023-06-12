@@ -1,11 +1,7 @@
-print("asfad")
-
-import configparser
 import json
 import asyncio
 import re
 import urllib.parse
-import os
 from datetime import date, datetime
 
 from telethon.errors import UsernameInvalidError
@@ -16,63 +12,34 @@ from telethon.tl.types import (
     PeerChannel
 )
 
-
-
-# Functions to parse json date
-class DateTimeEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, datetime):
-            return o.isoformat()
-
-        if isinstance(o, bytes):
-            return list(o)
-
-        return json.JSONEncoder.default(self, o)
-
+from utils.reading_config import reading_config
+from utils.authorization_check import authorize_client
+from modules.saving_netowork import DateTimeEncoder
+from modules.saving_netowork import save_level_data
+from modules.saving_netowork import read_channels_from_file
 
 # Reading Configs
-config = configparser.ConfigParser()
-config.read("config-bastiaugen.ini")
-
-# Setting configuration values
-api_id = config['Telegram']['api_id']
-api_hash = config['Telegram']['api_hash']
-
-api_hash = str(api_hash)
-
-phone = config['Telegram']['phone']
-username = config['Telegram']['username']
+config_file = 'config/config-bastiaugen.ini'
+api_id, api_hash, phone, username, num_levels = reading_config(config_file)
 
 # Create the client and connect
 client = TelegramClient(username, api_id, api_hash)
 
-# Reading number of iterations
-num_levels = config.get('Telegram', 'num_levels')
-num_levels = int(num_levels)
 
 async def main(phone):
     async with client:
         await client.start()
         print("Client Created")
 
-        # Check if the user is authorized, otherwise initiate the sign-in process
-        if not await client.is_user_authorized():
-            await client.send_code_request(phone)
-            try:
-                await client.sign_in(phone, input('Enter the code: '))
-            except SessionPasswordNeededError:
-                await client.sign_in(password=input('Password: '))
-
-        me = await client.get_me()
+        # Authorize cient
+        me = await authorize_client(client, phone)
 
         # Reading channels from a text file
-        with open('input_chats.txt', 'r') as file:
-            channels = [line.strip() for line in file]
+        channels = read_channels_from_file('input_chats.txt')
 
         level_data = {}  # Dictionary to store level data
         mentioned_channels = channels  # Initialize mentioned channels with input channels
         processed_channels = set()  # Set to keep track of processed channels
-        # num_levels = 3
 
         for level in range(num_levels):
             print(f"level {level}")
@@ -92,15 +59,15 @@ async def main(phone):
                 if entity in processed_channels:
                     continue  # Skip processing this channel if it has already been processed
 
-                print(f"Current channel is \033[0m{channel}\033[0m")
+                print(f"Current channel is {channel}")
                 try:
                     my_channel = await client.get_entity(entity)
                 except ValueError:
-                    print(f"\033[0mValueError\033[0m: Cannot find entity corresponding to {entity}")
+                    print(f"ValueError: Cannot find entity corresponding to {entity}")
                     continue
                 except UsernameInvalidError:
                     # UsernameInvalidError: Nobody is using this username, or the username is unacceptable.
-                    print(f"\033[0mUsernameInvalidError\033[0m: The channel {entity} doesn't exist anymore.")
+                    print(f"UsernameInvalidError: The channel {entity} doesn't exist anymore.")
                     continue
 
                 offset_id = 0
@@ -156,12 +123,7 @@ async def main(phone):
         print(f"mentioned channels:{mentioned_channels}")
         print(f"processed channels:{processed_channels}")
 
-        # Save the level data to a JSON file
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"{timestamp}_level_data.json"
-
-        with open(filename, "w") as outfile:
-            json.dump(level_data, outfile, cls=DateTimeEncoder)
+        save_level_data(level_data)
 
 with client:
     client.loop.run_until_complete(main(phone))
