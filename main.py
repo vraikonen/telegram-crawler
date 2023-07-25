@@ -12,7 +12,7 @@ from telethon.tl.functions.messages import (GetHistoryRequest)
 from telethon.tl.functions.channels import (
     GetFullChannelRequest, GetParticipantsRequest)
 from telethon.tl.types import (
-    PeerChannel, ChannelParticipantsSearch)
+    PeerChannel, PeerChat, MessageFwdHeader, ChannelParticipantsSearch)
 from telethon.tl import functions, types
 
 
@@ -50,7 +50,7 @@ client = TelegramClient(username, api_id, api_hash)
 
 # First connection to the chat
 async def get_entity(entity):
-    if entity.isdigit():
+    if str(entity).isdigit():
         entity = PeerChannel(int(entity))
     else:
         entity = entity
@@ -62,11 +62,7 @@ async def get_chat_info(client, current_chat):
     # chat_info = []
 
     chat_full = await client(GetFullChannelRequest(current_chat))
-    #print(chat_full.stringify())
     chat_dict = chat_full.to_dict()
-    #print(chat_dict)
-    #chat_info.append(chat_dict)
-    #print(chat_info)
     
     return chat_dict
 
@@ -94,17 +90,44 @@ async def get_participants(chat):
     return all_users_by_chat
 
 
+def get_fwd_from(message):
+    fwd_from_chats = []
+
+    fwd_from = message.fwd_from
+    if fwd_from and isinstance(fwd_from, MessageFwdHeader):
+        from_id = fwd_from.from_id
+
+        if isinstance(from_id, PeerChannel):
+            id_value = from_id.channel_id
+            fwd_from_chats.append(id_value)
+
+        elif isinstance(from_id, PeerChat):
+            id_value = from_id.chat_id
+            fwd_from_chats.append(id_value)
+
+    return fwd_from_chats
+
+def get_mentioned_chats(message):
+    mentioned_chats = []
+
+    message_text = message.message
+    if message_text:
+        # Using regular expressions to find both URLs and @channel_username mentions
+        mentions = re.findall(r"(?:(?:https?://)?t\.me/|@)(\w+)", message_text)
+        for mention in mentions:
+            mentioned_chats.append(mention)
+
+    return mentioned_chats
+
 async def get_messages(chat):
 
     limit=100
     total_count_limit=0
     offset_id = 0
     all_messages = []
-    filtered_messages = []
     total_messages = 0
-    mentioned_chats = []
-    fwd_chats = []
-    
+    mentioned_chats_full = []
+    fwd_from_chats_full = []
     while True:
         #print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
         history = await client(GetHistoryRequest(
@@ -125,38 +148,22 @@ async def get_messages(chat):
         for message in messages:
             all_messages.append(message.to_dict())
 
-            # Include "fwd_from" channel ID if available
-            fwd_from = message.fwd_from
-            
-            if fwd_from and isinstance(fwd_from, dict):
-                from_id = fwd_from.get("from_id", {})
-                if from_id and isinstance(from_id, dict):
-                    if "channel_id" in from_id:
-                        id_value = from_id["channel_id"]
-                    elif "chat_id" in from_id:
-                        id_value = from_id["chat_id"]
-
-                    #print("ID value:", id_value)
-                    fwd_chats.append(id_value)
-                    #print(f"FWD: {fwd_chats}")
+            # Getting fwd from chats
+            fwd_from_chats = get_fwd_from(message)
+            fwd_from_chats_full.extend(fwd_from_chats)
 
 
             # Getting mentioned chats
-            if message.message and "https://t.me/" in message.message:
-                words = message.message.split()
-                filtered_words = [word for word in words if word.startswith("https://t.me/")]
-                for url in filtered_words:
-                    chat_name = urllib.parse.urlparse(url).path.split('/')[1]
-                    mentioned_chats.append(chat_name)
-                    #print(f"MNT: {mentioned_chats}")
+            mentioned_chats = get_mentioned_chats(message)
+            mentioned_chats_full.extend(mentioned_chats)
         
         offset_id = messages[len(messages) - 1].id
         total_messages = len(all_messages)
         
         if total_count_limit != 0 and total_messages >= total_count_limit:
             break
-    
-    return all_messages, mentioned_chats, fwd_chats
+
+    return all_messages, mentioned_chats_full, fwd_from_chats_full
 
 # Write to json
 def append_data_to_json(data, filename):
@@ -175,28 +182,42 @@ async def main(phone):
         # Reading chats from a text file
         entities = read_channels_from_file('input_chats.txt')
 
-        # Initialize a set for processed chats
+        # Initialize a set for processed chats/how large can this be knowing it will stay in the memory
         processed_chats = set()
-        # Initialize dictionary containing chat network
-        full_iteration = {}
-        # Initialize iteration number
+
+        # Define variables for get_entity() exceptions for request to be awaited
+        max_delay_time = 60
+        delay_multiplier = 5
+        consecutive_errors = 0
+        
+        # Initialize iteration number, define iteration time
         iteration_num = 1
-        
-        duration_minutes = 400 # Set the duration
+        duration_minutes = 240 # Set the duration
         end_time = time.time() + duration_minutes * 60
-        # iteration_limit = 300  # Set the iteration limit to 300 which is approximately one day
-        
+
         while time.time() < end_time:
-        
+
+            # Define full_iteration dictionary which will be overwritten with each new full iteration (iteration over all input chats),
+            # as well as all_mentions which will be used for next full iteration
+            full_iteration = {}
+            all_mentions = []
+
             # Main code: Iterating over input/mentioned chats
             for entity in entities:
-                
+                    
                 # Creating first connection with the chat
                 try:
                     current_chat = await get_entity(entity)
                     logging.info(f"Current processing chat is: {current_chat.id}")
+                    # Reset the consecutive error count to 0 if the operation is successful
+                    consecutive_errors = 0
                 except Exception as e:
                     logging.error(f"An error occurred for get_entity {entity}: {str(e)}")
+                    # Calculate the delay time based on the consecutive error count
+                    delay_time = min(max_delay_time, (consecutive_errors + 1) * delay_multiplier)
+                    print(delay_time)
+                    consecutive_errors += 1
+                    await asyncio.sleep(delay_time)
                     continue
                 
                 # Skipping proccessed entities before get_chat_info() because it produces rate limits
@@ -211,55 +232,64 @@ async def main(phone):
                 except Exception as e:
                     logging.error(f"An error occurred for get_chat_info {current_chat}: {str(e)}")
                     continue
-
-                # Getting chat_id from chat_info used in data retrieval
-                chat_id = chat_info['full_chat']['id']
-                print(chat_id)        
-                # Linked_chat_id is always a group linked to a channel or vice versa
-                linked_chat_id = chat_info['full_chat']['linked_chat_id']
-                print(f"LNK: {linked_chat_id}")
                 
+
+                ### CHECK THIS SECTION WHEN YOU LATER WANT TO SAVE CHAT INFO DIFFERENTELY
+                # Getting chat_id from chat_info used in data retrieval; linked_chat_id is always a group linked to a channel or vice versa
+                chat_id = chat_info['full_chat']['id']        
+                linked_chat_id = chat_info['full_chat']['linked_chat_id']
+
                 # Apply functions for fetching data
                 try:
-                    messages, mentioned_chats, fwd_chats = await get_messages(chat_id)
+                    messages, mentioned_chats_full, fwd_from_chats_full = await get_messages(chat_id)
                     append_data_to_json(messages, 'messages.json')
-                    success = True
+
+                    # Creating chat dictionary with mentioned chats
+                    all_mentions_dict = {}
+                    all_mentions_dict[chat_id] = {
+                        "Mentioned": mentioned_chats_full,
+                        "Fwd_from": fwd_from_chats_full,
+                        "Linked": linked_chat_id,
+                    }
+                    
+                    # Appending chat dictionary with mentioned chats to all chat dictionaries with mentioned chats from this iteration
+                    full_iteration.setdefault(f"iteration{iteration_num}", []).append(all_mentions_dict)
+                
                 except Exception as e:
                     logging.error(f"An error occurred in get_messages for chat (or it was writing response to the file) {chat_id}: {str(e)}")
-                    success = False
+
                 try:
                     participants = await get_participants(chat_id)
                     append_data_to_json(participants, 'participants.json')
-                    success = True
+                    # success = True
                 except Exception as e:
-                    logging.error(f"An error occurred in get_participants for chat (or it was writing response to the file) {chat_id}: {str(e)}")
-                    success = False
-
-                # Check if either of the try blocks was successful (maybe there is chance that sometimes we could get participants but not messages for some reason)
-                if not success:
-                    continue 
-
-                # Adding processed chat
+                    # Check if the error message indicates that admin privileges are required
+                    error_message = str(e)
+                    if "Chat admin privileges are required to do that" not in error_message:
+                        # Log the error if it's not the specific excluded error
+                        logging.error(f"An error occurred in get_participants for chat {chat_id}: {error_message}")
+                
+                # Add chat id to the processed chats
                 processed_chats.add(chat_id)
-
-                # Combining all mentioned chats
-                all_mentions = mentioned_chats + fwd_chats
-                if linked_chat_id is not None:
+                # Append the values of all mentioned chat types
+                all_mentions.extend(mentioned_chats_full)
+                all_mentions.extend(fwd_from_chats_full)
+                if linked_chat_id is not None: 
                     all_mentions.append(linked_chat_id)
-                #print(all_mentions)
-                all_mentions_dict = {chat_id: all_mentions}
-                #print(all_mentions_dict)
+                print(all_mentions)
+           
+            # Save full iteration
+            append_data_to_json(full_iteration, 'full_iteration.json')
+            
+            # Define next full iteration entities
+            next_iteration = set(all_mentions)
+            next_iteration_list = list(next_iteration)
+            entities = next_iteration_list
 
-                # Combining all proccesed chats and their mentions
-                full_iteration.setdefault(f"iteration{iteration_num}", []).append(all_mentions_dict)
-                #logging.info(full_iteration)
-            append_data_to_json(full_iteration, 'chat_network.json')
-
-            # Logic for new iteration:
-            iteration_num += 1
-            entities = all_mentions
-            logging.info(f"Chats proccessed in a previous iterations {processed_chats}")
-            #logging.info(full_iteration)
-
+            # Itertion number for the next full iteration is +1
+            iteration_num += 1   
+            
 with client:
     client.loop.run_until_complete(main(phone))
+
+
