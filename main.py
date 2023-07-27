@@ -1,7 +1,6 @@
 import json
 import asyncio
 import re
-import urllib.parse
 import time
 from datetime import datetime
 import logging
@@ -18,10 +17,9 @@ from telethon.tl import functions, types
 
 from utils.reading_config import reading_config
 from utils.authorization_check import authorize_client
-from modules.saving_netowork import DateTimeEncoder
-from modules.saving_netowork import save_level_data
 from modules.saving_netowork import read_channels_from_file
-
+from modules.main_crawler import (
+    get_entity, get_chat_info, get_participants, get_fwd_from, get_mentioned_chats, get_messages)
 
 logging.basicConfig(
     filename='applicationMain.log',
@@ -48,122 +46,122 @@ api_id, api_hash, phone, username, num_levels = reading_config(config_file)
 # Create the client and connect
 client = TelegramClient(username, api_id, api_hash)
 
-# First connection to the chat
-async def get_entity(entity):
-    if str(entity).isdigit():
-        entity = PeerChannel(int(entity))
-    else:
-        entity = entity
-    current_chat = await client.get_entity(entity)
-    return current_chat
+# # First connection to the chat
+# async def get_entity(entity):
+#     if str(entity).isdigit():
+#         entity = PeerChannel(int(entity))
+#     else:
+#         entity = entity
+#     current_chat = await client.get_entity(entity)
+#     return current_chat
 
-# Getting further information about the chat
-async def get_chat_info(client, current_chat):
-    # chat_info = []
+# # Getting further information about the chat
+# async def get_chat_info(client, current_chat):
+#     # chat_info = []
 
-    chat_full = await client(GetFullChannelRequest(current_chat))
-    chat_dict = chat_full.to_dict()
+#     chat_full = await client(GetFullChannelRequest(current_chat))
+#     chat_dict = chat_full.to_dict()
     
-    return chat_dict
+#     return chat_dict
 
-async def get_participants(chat):
-    limit=100
-    offset = 0
-    all_participants = []
+# async def get_participants(chat):
+#     limit=100
+#     offset = 0
+#     all_participants = []
 
-    while True:
-        participants = await client(GetParticipantsRequest(
-            chat, ChannelParticipantsSearch(''), offset, limit, hash=0
-        ))
-        if not participants.users:
-            break
-        all_participants.extend(participants.users)
-        offset += len(participants.users)
+#     while True:
+#         participants = await client(GetParticipantsRequest(
+#             chat, ChannelParticipantsSearch(''), offset, limit, hash=0
+#         ))
+#         if not participants.users:
+#             break
+#         all_participants.extend(participants.users)
+#         offset += len(participants.users)
 
-    all_user_details = []
-    for participant in all_participants:
-        all_user_details.append(participant.to_dict())
+#     all_user_details = []
+#     for participant in all_participants:
+#         all_user_details.append(participant.to_dict())
 
-    all_users_by_chat = {}
-    all_users_by_chat[chat] = all_user_details
+#     all_users_by_chat = {}
+#     all_users_by_chat[chat] = all_user_details
     
-    return all_users_by_chat
+#     return all_users_by_chat
 
 
-def get_fwd_from(message):
-    fwd_from_chats = []
+# def get_fwd_from(message):
+#     fwd_from_chats = []
 
-    fwd_from = message.fwd_from
-    if fwd_from and isinstance(fwd_from, MessageFwdHeader):
-        from_id = fwd_from.from_id
+#     fwd_from = message.fwd_from
+#     if fwd_from and isinstance(fwd_from, MessageFwdHeader):
+#         from_id = fwd_from.from_id
 
-        if isinstance(from_id, PeerChannel):
-            id_value = from_id.channel_id
-            fwd_from_chats.append(id_value)
+#         if isinstance(from_id, PeerChannel):
+#             id_value = from_id.channel_id
+#             fwd_from_chats.append(id_value)
 
-        elif isinstance(from_id, PeerChat):
-            id_value = from_id.chat_id
-            fwd_from_chats.append(id_value)
+#         elif isinstance(from_id, PeerChat):
+#             id_value = from_id.chat_id
+#             fwd_from_chats.append(id_value)
 
-    return fwd_from_chats
+#     return fwd_from_chats
 
-def get_mentioned_chats(message):
-    mentioned_chats = []
+# def get_mentioned_chats(message):
+#     mentioned_chats = []
 
-    message_text = message.message
-    if message_text:
-        # Using regular expressions to find both URLs and @channel_username mentions
-        mentions = re.findall(r"(?:(?:https?://)?t\.me/|@)(\w+)", message_text)
-        for mention in mentions:
-            mentioned_chats.append(mention)
+#     message_text = message.message
+#     if message_text:
+#         # Using regular expressions to find both URLs and @channel_username mentions
+#         mentions = re.findall(r"(?:(?:https?://)?t\.me/|@)(\w+)", message_text)
+#         for mention in mentions:
+#             mentioned_chats.append(mention)
 
-    return mentioned_chats
+#     return mentioned_chats
 
-async def get_messages(chat):
+# async def get_messages(chat):
 
-    limit=100
-    total_count_limit=0
-    offset_id = 0
-    all_messages = []
-    total_messages = 0
-    mentioned_chats_full = []
-    fwd_from_chats_full = []
-    while True:
-        #print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
-        history = await client(GetHistoryRequest(
-            peer=chat,
-            offset_id=offset_id,
-            offset_date=None,
-            add_offset=0,
-            limit=limit,
-            max_id=0,
-            min_id=0,
-            hash=0
-        ))
+#     limit=100
+#     total_count_limit=0
+#     offset_id = 0
+#     all_messages = []
+#     total_messages = 0
+#     mentioned_chats_full = []
+#     fwd_from_chats_full = []
+#     while True:
+#         #print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
+#         history = await client(GetHistoryRequest(
+#             peer=chat,
+#             offset_id=offset_id,
+#             offset_date=None,
+#             add_offset=0,
+#             limit=limit,
+#             max_id=0,
+#             min_id=0,
+#             hash=0
+#         ))
         
-        if not history.messages:
-            break
+#         if not history.messages:
+#             break
         
-        messages = history.messages
-        for message in messages:
-            all_messages.append(message.to_dict())
+#         messages = history.messages
+#         for message in messages:
+#             all_messages.append(message.to_dict())
 
-            # Getting fwd from chats
-            fwd_from_chats = get_fwd_from(message)
-            fwd_from_chats_full.extend(fwd_from_chats)
+#             # Getting fwd from chats
+#             fwd_from_chats = get_fwd_from(message)
+#             fwd_from_chats_full.extend(fwd_from_chats)
 
 
-            # Getting mentioned chats
-            mentioned_chats = get_mentioned_chats(message)
-            mentioned_chats_full.extend(mentioned_chats)
+#             # Getting mentioned chats
+#             mentioned_chats = get_mentioned_chats(message)
+#             mentioned_chats_full.extend(mentioned_chats)
         
-        offset_id = messages[len(messages) - 1].id
-        total_messages = len(all_messages)
+#         offset_id = messages[len(messages) - 1].id
+#         total_messages = len(all_messages)
         
-        if total_count_limit != 0 and total_messages >= total_count_limit:
-            break
+#         if total_count_limit != 0 and total_messages >= total_count_limit:
+#             break
 
-    return all_messages, mentioned_chats_full, fwd_from_chats_full
+#     return all_messages, mentioned_chats_full, fwd_from_chats_full
 
 # Write to json
 def append_data_to_json(data, filename):
@@ -207,7 +205,7 @@ async def main(phone):
                     
                 # Creating first connection with the chat
                 try:
-                    current_chat = await get_entity(entity)
+                    current_chat = await get_entity(client, entity)
                     logging.info(f"Current processing chat is: {current_chat.id}")
                     # Reset the consecutive error count to 0 if the operation is successful
                     consecutive_errors = 0
@@ -241,7 +239,10 @@ async def main(phone):
 
                 # Apply functions for fetching data
                 try:
-                    messages, mentioned_chats_full, fwd_from_chats_full = await get_messages(chat_id)
+                    messages, mentioned_chats_full, fwd_from_chats_full = await get_messages(client, chat_id)
+                    print(messages)
+                    print(mentioned_chats_full)
+                    print(fwd_from_chats_full)
                     append_data_to_json(messages, 'messages.json')
 
                     # Creating chat dictionary with mentioned chats
@@ -259,8 +260,9 @@ async def main(phone):
                     logging.error(f"An error occurred in get_messages for chat (or it was writing response to the file) {chat_id}: {str(e)}")
 
                 try:
-                    participants = await get_participants(chat_id)
+                    participants = await get_participants(client, chat_id)
                     append_data_to_json(participants, 'participants.json')
+                    print(participants)
                     # success = True
                 except Exception as e:
                     # Check if the error message indicates that admin privileges are required
@@ -288,7 +290,7 @@ async def main(phone):
 
             # Itertion number for the next full iteration is +1
             iteration_num += 1   
-            
+         
 with client:
     client.loop.run_until_complete(main(phone))
 

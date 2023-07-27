@@ -222,6 +222,14 @@ Important questions right now?
 - [ ] Add retry decorator and catch flood await error? - yes
 - [ ] MongoDB or something else? I think noSQL is good, really check everything at the end, there might be some change in data structure so you want be able to excecute for instance now it is none, but it can be null for linked_chat_id.
 
+
+TESTING:
+- Install pytest-asyncio library
+The <username>.session file is essential for the functioning of the Telegram API client. It stores the necessary session information required to establish a connection to the Telegram server. The file is generated when the TelegramClient instance is initialized for the first time and logs in to the Telegram server. However, when running pytest, it becomes challenging to provide the necessary authorization code interactively, as pytest runs non-interactively in the terminal. This leads to a situation where tests are unable to establish a connection to the Telegram server, and the authorization process cannot be completed.
+//
+To overcome this issue and enable the successful execution of tests, a preliminary script or setup file can be created. This script should include the necessary steps to initialize the TelegramClient and establish a connection to the Telegram server, including providing the required authorization code. Once the client is authenticated successfully and the <username>.session file is generated, the script can call the get_entity function on any entity as a test setup. Once this initial setup script has been run, the session file will be available for future test runs. Subsequent test executions using pytest in the tests/test_main_crawler folder will not require manual authorization, as they will use the existing <username>.session file for a successful connection to the Telegram server.. 
+
+
 Important questions later?
 - [ ] Updating database with new messages - a lot to discuss (or a lot for me to consider) - include ttl period, hash
 - [ ] Defining input chats
