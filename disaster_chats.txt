@@ -1,0 +1,14 @@
+NuclearDisasters
+top_disasters
+CatastrophicDisastersBackup
+ShipDisasters
+naturaldisasterbb
+titanicbackup
+NuclearDisasters
+PlaneDisasters
+disasterfreaks
+WarningAlertTelegram
+AlertSwiss
+MeteoSwissTelegram
+WarnmeldungenDeutschland
+FRAlert

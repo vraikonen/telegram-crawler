@@ -1,0 +1,233 @@
+{
+    "_id": {
+      "$oid": "653026d6555d518f4a692307"
+    },
+    "_": "ChatFull",
+    "full_chat": {
+      "_": "ChannelFull",
+      "id": 1310294120,
+      "about": "Top world disasters and catastrophes ⚠️\n\nTo buy add:\nhttps://telega.io/c/top_disasters\n\nFor advertising and copyright issues: \n@Styanr\n\nDear subscribers, the channel administration is not responsible for advertising!",
+      "read_inbox_max_id": 2434,
+      "read_outbox_max_id": 0,
+      "unread_count": 9,
+      "chat_photo": {
+        "_": "Photo",
+        "id": {
+          "$numberLong": "5395858467727717558"
+        },
+        "access_hash": {
+          "$numberLong": "6260085926997717680"
+        },
+        "file_reference": {
+          "$binary": {
+            "base64": "AGUwJtbqkiAGZla5eM+8N2TxRD16",
+            "subType": "00"
+          }
+        },
+        "date": {
+          "$date": "2021-10-05T08:22:54.000Z"
+        },
+        "sizes": [
+          {
+            "_": "PhotoSize",
+            "type": "a",
+            "w": 160,
+            "h": 160,
+            "size": 11872
+          },
+          {
+            "_": "PhotoSize",
+            "type": "b",
+            "w": 320,
+            "h": 320,
+            "size": 38137
+          },
+          {
+            "_": "PhotoSize",
+            "type": "c",
+            "w": 640,
+            "h": 640,
+            "size": 103223
+          },
+          {
+            "_": "PhotoStrippedSize",
+            "type": "i",
+            "bytes": {
+              "$binary": {
+                "base64": "ASgoxqMUoGTgVrWlqkKCSRQcDJJGcUm7FJX1Mvy3xnacfSmVsTXW0fKM569sVWlRLnJUbX7e9DbWrQ4pS2KFFBGDiimQS23/AB8R5/vCtN5WBZWGQc98VkoxVgw7GtFZVuFyDh+9TflkmzSK5otFgxRyRbyo3ngnOaqFDDKp9amQsikZBUngDtUM820nLZGcqpok7t9hRi07lW6wbhtowKKiY5JNFNKyJbu7iUoJByDRRTEP86TGNx/OmEk9aKKLDu2JRRRQIw==",
+                "subType": "00"
+              }
+            }
+          }
+        ],
+        "dc_id": 2,
+        "has_stickers": false,
+        "video_sizes": []
+      },
+      "notify_settings": {
+        "_": "PeerNotifySettings",
+        "show_previews": null,
+        "silent": null,
+        "mute_until": null,
+        "ios_sound": null,
+        "android_sound": null,
+        "other_sound": null,
+        "stories_muted": null,
+        "stories_hide_sender": null,
+        "stories_ios_sound": null,
+        "stories_android_sound": null,
+        "stories_other_sound": null
+      },
+      "bot_info": [],
+      "pts": 7173,
+      "can_view_participants": false,
+      "can_set_username": false,
+      "can_set_stickers": false,
+      "hidden_prehistory": false,
+      "can_set_location": false,
+      "has_scheduled": false,
+      "can_view_stats": false,
+      "blocked": false,
+      "can_delete_channel": false,
+      "antispam": false,
+      "participants_hidden": false,
+      "translations_disabled": false,
+      "participants_count": 24921,
+      "admins_count": null,
+      "kicked_count": null,
+      "banned_count": null,
+      "online_count": null,
+      "exported_invite": null,
+      "migrated_from_chat_id": null,
+      "migrated_from_max_id": null,
+      "pinned_msg_id": null,
+      "stickerset": null,
+      "available_min_id": null,
+      "folder_id": null,
+      "linked_chat_id": null,
+      "location": null,
+      "slowmode_seconds": null,
+      "slowmode_next_send_date": null,
+      "stats_dc": null,
+      "call": null,
+      "ttl_period": null,
+      "pending_suggestions": [],
+      "groupcall_default_join_as": null,
+      "theme_emoticon": null,
+      "requests_pending": null,
+      "recent_requesters": [],
+      "default_send_as": null,
+      "available_reactions": {
+        "_": "ChatReactionsSome",
+        "reactions": [
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "👍"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "👎"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "❤"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "🔥"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "🥰"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "👏"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "😁"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "🤔"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "🤯"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "😱"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "😢"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "🎉"
+          },
+          {
+            "_": "ReactionEmoji",
+            "emoticon": "🤩"
+          }
+        ]
+      }
+    },
+    "chats": [
+      {
+        "_": "Channel",
+        "id": 1310294120,
+        "title": "Top Disasters",
+        "photo": {
+          "_": "ChatPhoto",
+          "photo_id": {
+            "$numberLong": "5395858467727717558"
+          },
+          "dc_id": 2,
+          "has_video": false,
+          "stripped_thumb": {
+            "$binary": {
+              "base64": "AQgIzz5H2UYxv7+pNFFFA7k=",
+              "subType": "00"
+            }
+          }
+        },
+        "date": {
+          "$date": "2023-07-31T09:44:03.000Z"
+        },
+        "creator": false,
+        "left": false,
+        "broadcast": true,
+        "verified": false,
+        "megagroup": false,
+        "restricted": false,
+        "signatures": false,
+        "min": false,
+        "scam": false,
+        "has_link": false,
+        "has_geo": false,
+        "slowmode_enabled": false,
+        "call_active": false,
+        "call_not_empty": false,
+        "fake": false,
+        "gigagroup": false,
+        "noforwards": false,
+        "join_to_send": false,
+        "join_request": false,
+        "forum": false,
+        "access_hash": {
+          "$numberLong": "1124250972013679692"
+        },
+        "username": "top_disasters",
+        "restriction_reason": [],
+        "admin_rights": null,
+        "banned_rights": null,
+        "default_banned_rights": null,
+        "participants_count": null,
+        "usernames": []
+      }
+    ],
+    "users": []
+  }

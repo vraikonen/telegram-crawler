@@ -1,0 +1,127 @@
+{
+    "_id": {
+      "$oid": "655632de2f9ab62d06f2777f"
+    },
+    "_": "Message",
+    "id": 2465,
+    "peer_id": {
+      "_": "PeerChannel",
+      "channel_id": 1310294120
+    },
+    "date": {
+      "$date": "2023-11-16T13:19:53.000Z"
+    },
+    "message": "In Colombia, a woman died after being struck by lightning - the moment was caught on video",
+    "out": false,
+    "mentioned": false,
+    "media_unread": false,
+    "silent": true,
+    "post": true,
+    "from_scheduled": false,
+    "legacy": false,
+    "edit_hide": true,
+    "pinned": false,
+    "noforwards": false,
+    "from_id": null,
+    "fwd_from": null,
+    "via_bot_id": null,
+    "reply_to": null,
+    "media": {
+      "_": "MessageMediaDocument",
+      "nopremium": false,
+      "spoiler": false,
+      "document": {
+        "_": "Document",
+        "id": {
+          "$numberLong": "5382085275952364226"
+        },
+        "access_hash": {
+          "$numberLong": "-3831696355342398247"
+        },
+        "file_reference": {
+          "$binary": {
+            "base64": "Ak4ZgGgAAAmhZVYy3hKWfM9d3qRONgUdkLRQ7Ts=",
+            "subType": "00"
+          }
+        },
+        "date": {
+          "$date": "2023-11-16T13:19:53.000Z"
+        },
+        "mime_type": "video/mp4",
+        "size": 501330,
+        "dc_id": 2,
+        "attributes": [
+          {
+            "_": "DocumentAttributeVideo",
+            "duration": 10.5,
+            "w": 848,
+            "h": 480,
+            "round_message": false,
+            "supports_streaming": true,
+            "nosound": false,
+            "preload_prefix_size": null
+          }
+        ],
+        "thumbs": [
+          {
+            "_": "PhotoStrippedSize",
+            "type": "i",
+            "bytes": {
+              "$binary": {
+                "base64": "ARcofCq7FyB0qwqJ6LWZFJnA344q8pYDOcmrILO2P+6PypjCPngce1Vo2mLkKQAvBBNTkdz1PXFD0EtSCbYFYYGcelFJPjY3Haii5VirHIFUcj8qlW6A7n8BRRUjHrcdSpPJ5p5mUjk8/jRRQBBLKCp6dKKKKAM=",
+                "subType": "00"
+              }
+            }
+          },
+          {
+            "_": "PhotoSize",
+            "type": "m",
+            "w": 320,
+            "h": 181,
+            "size": 11992
+          }
+        ],
+        "video_thumbs": []
+      },
+      "alt_document": null,
+      "ttl_seconds": null
+    },
+    "reply_markup": null,
+    "entities": [],
+    "views": 625,
+    "forwards": 7,
+    "replies": null,
+    "edit_date": {
+      "$date": "2023-11-16T13:30:09.000Z"
+    },
+    "post_author": null,
+    "grouped_id": null,
+    "reactions": {
+      "_": "MessageReactions",
+      "results": [
+        {
+          "_": "ReactionCount",
+          "reaction": {
+            "_": "ReactionEmoji",
+            "emoticon": "😢"
+          },
+          "count": 11,
+          "chosen_order": null
+        },
+        {
+          "_": "ReactionCount",
+          "reaction": {
+            "_": "ReactionEmoji",
+            "emoticon": "😱"
+          },
+          "count": 4,
+          "chosen_order": null
+        }
+      ],
+      "min": false,
+      "can_see_list": false,
+      "recent_reactions": []
+    },
+    "restriction_reason": [],
+    "ttl_period": null
+  }

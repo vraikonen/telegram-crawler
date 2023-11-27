@@ -1,10 +1,12 @@
 import pytest
 import asyncio
 
+
 # The function we want to test
 async def async_add_numbers(a, b):
     await asyncio.sleep(2)  # Simulate an asynchronous operation
     return a + b
+
 
 # The test function
 @pytest.mark.asyncio
