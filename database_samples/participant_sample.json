@@ -1,0 +1,53 @@
+{
+    "_id": {
+      "$oid": "655641d5d961774e4e098808"
+    },
+    "_": "User",
+    "id": {
+      "$numberLong": "6392091068"
+    },
+    "is_self": false,
+    "contact": false,
+    "mutual_contact": false,
+    "deleted": false,
+    "bot": false,
+    "bot_chat_history": false,
+    "bot_nochats": false,
+    "verified": false,
+    "restricted": false,
+    "min": false,
+    "bot_inline_geo": false,
+    "support": false,
+    "scam": false,
+    "apply_min_photo": true,
+    "fake": false,
+    "bot_attach_menu": false,
+    "premium": false,
+    "attach_menu_enabled": false,
+    "bot_can_edit": false,
+    "close_friend": false,
+    "stories_hidden": false,
+    "stories_unavailable": true,
+    "access_hash": {
+      "$numberLong": "-4568309072390134189"
+    },
+    "first_name": "Klara",
+    "last_name": null,
+    "username": null,
+    "phone": null,
+    "photo": null,
+    "status": {
+      "_": "UserStatusOffline",
+      "was_online": {
+        "$date": "2023-10-24T04:47:32.000Z"
+      }
+    },
+    "bot_info_version": null,
+    "restriction_reason": [],
+    "bot_inline_placeholder": null,
+    "lang_code": null,
+    "emoji_status": null,
+    "usernames": [],
+    "stories_max_id": null,
+    "chat_id": 1774186312
+  }
