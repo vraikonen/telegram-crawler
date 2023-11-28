@@ -131,7 +131,7 @@ To access the Telegram API and use it in this project, you need to obtain API cr
 
 1. Clone the repo.
 
-2. Install telethon and pymongo.
+2. Install requirements.txt.
 
 3. Enter the api details in the config file. 
 
