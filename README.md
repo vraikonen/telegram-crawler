@@ -123,7 +123,7 @@ To access the Telegram API and use it in this project, you need to obtain API cr
 
 3. Optionally, change path to the logs and data folders.
 
-4. Update **config-database** with the path to the server(port:27017 by default) and the names for the database and collections.
+4. Update **config-database** with the path to the server(port:27017 by default, changeable at bin/mongo.cfg) and the names for the database and collections.
 
 5. Optionally change the database name. When changing collection names, keep the same meaning, e.g. keep collection1 so it corresponds to the information regarding the chat, keep collection2 so it corresponds to the messages.
 

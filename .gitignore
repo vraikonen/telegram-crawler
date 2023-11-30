@@ -163,4 +163,4 @@ cython_debug/
 # My files
 *.pickle
 Pipfile
-.session
+bastiaugen.session

@@ -1,4 +1,6 @@
 import json
+import pickle
+
 from datetime import date, datetime
 
 
@@ -27,3 +29,16 @@ def save_level_data(level_data):
 def read_channels_from_file(file_path):
     with open(file_path, "r") as file:
         return [line.strip() for line in file]
+    
+
+# Write pickle 
+def write_pickle(data, file_path):
+    with open(file_path, 'wb') as file:
+        pickle.dump(data, file)
+
+# Read pickle
+def read_pickle(file_path):
+    with open(file_path, 'rb') as file:
+        data = pickle.load(file)
+    return data
+

@@ -7,7 +7,7 @@ from telethon import TelegramClient
 from utils.reading_config import reading_config, reading_config_database
 from utils.authorization_check import authorize_client
 from utils.logging import logging_crawler
-from modules.saving_netowork import read_channels_from_file
+from utils.file_io import read_channels_from_file, write_pickle, read_pickle
 from modules.main_crawler import (
     get_entity,
     get_chat_info,
@@ -58,8 +58,8 @@ async def main(phone):
         processed_chats = set()
 
         # Define variables for get_entity() exceptions for request to be awaited
-        max_delay_time = 60
-        delay_multiplier = 5
+        max_delay_time = 120
+        delay_multiplier = 10
         consecutive_errors = 0
 
         # Initialize iteration number, define iteration time
