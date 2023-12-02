@@ -42,11 +42,3 @@ def read_pickle(file_path):
     with open(file_path, 'rb') as file:
         data = pickle.load(file)
     return data
-
-
-def check_script(pickle_name, filepath):
-    if os.path.exists(filepath):
-        pickle_name = read_pickle(filepath)
-    else:
-        pass
-

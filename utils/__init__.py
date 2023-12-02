@@ -6,4 +6,3 @@ from utils.file_io import save_level_data
 from utils.file_io import read_channels_from_file
 from utils.file_io import write_pickle
 from utils.file_io import read_pickle
-from utils.file_io import check_script

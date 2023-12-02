@@ -198,7 +198,6 @@ async def main_get_messages(iteration_num, full_iteration, chat_id, linked_chat_
         full_iteration.setdefault(f"iteration{iteration_num}", []).append(
                         all_mentions_dict
                     )
-        print(full_iteration)
 
     except Exception as e:
         logging.error(
