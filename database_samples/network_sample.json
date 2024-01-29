@@ -1,0 +1,56 @@
+{
+    "_id": {
+      "$oid": "65b2d9ef4c5a67fd40cb5c0d"
+    },
+    "iteration_num": 2,
+    "chat_id": 1534626323,
+    "mentions_with_tdotme": [
+      "InvisibleEmpirePublishing",
+      "NSCC_Uncensored",
+      "NSCreatorsClub"
+    ],
+    "mentions_with_at": [
+      "ZakalKampf",
+      "FriendlyFather",
+      "InvisibleEmpirePublishing",
+      "NSCreatorsClub",
+      "NSCreatorsClub",
+      "NSCCmag",
+      "InvisibleEmpirePublishing",
+      "NSCCMag",
+      "Frauenwerk",
+      "DineWithMe",
+      "ZakalKampf",
+      "friendlyfather",
+      "VolkSpirit",
+      "nationalsocialistnetwork"
+    ],
+    "fwd_from": [
+      1635259727,
+      1635259727,
+      1635259727,
+      1635259727,
+      1635259727,
+      1635259727,
+      1635259727,
+      1635259727,
+      1303089864,
+      1635259727,
+      1635259727,
+      1388884232,
+      1284383291,
+      1284383291,
+      1284383291,
+      1284383291,
+      1284383291,
+      1635259727,
+      1585919701,
+      1284383291,
+      1408165010,
+      1408165010,
+      1408165010,
+      1585919701,
+      1376621654
+    ],
+    "linked": 1439562947
+  }
