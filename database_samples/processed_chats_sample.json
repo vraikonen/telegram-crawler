@@ -1,0 +1,35 @@
+
+{ "example1":{
+    "_id": {
+      "$oid": "65b2d9f94c5a67fd40cb5c11"
+    },
+    "iteration_num": 2,
+    "type": "invalid_entity",
+    "entity": "andkonsreich",
+    "chat_id": null
+  },
+  
+  "example2": {
+    "_id": {
+      "$oid": "65b2d9ed4c5a67fd40cb5be3"
+    },
+    "iteration_num": 2,
+    "type": "valid",
+    "entity": 1660680716,
+    "chat_id": 1660680716
+  },
+
+  "example3":{
+    "_id": {
+      "$oid": "65b2dd2a4c5a67fd40cca780"
+    },
+    "iteration_num": 2,
+    "type": "invalid_chat",
+    "entity": "arseduck",
+    "chat_id": 763521808
+  }
+
+}
+
+
+

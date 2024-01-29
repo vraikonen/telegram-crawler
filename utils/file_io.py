@@ -1,9 +1,7 @@
 import json
 import pickle
-import os
 
 from datetime import date, datetime
-
 
 # Functions to parse json date
 class DateTimeEncoder(json.JSONEncoder):
@@ -28,17 +26,50 @@ def save_level_data(level_data):
 
 # Reading input channels
 def read_channels_from_file(file_path):
+    """
+    Reads input channels from a text file.
+
+    This function reads the content of a text file located at the specified 'file_path'.
+    Each line in the file is treated as a separate input channel, and the function returns
+    a list of channels after stripping leading and trailing whitespaces.
+
+    Parameters:
+    - file_path (str): The path to the input channels file.
+
+    Returns:
+    list: A list of input channels read from the file.
+    """
     with open(file_path, "r") as file:
         return [line.strip() for line in file]
-    
 
-# Write pickle 
+
+# Write pickle
 def write_pickle(data, file_path):
-    with open(file_path, 'wb') as file:
+    """
+    Writes data to a pickle file.
+
+    Parameters:
+    - data: The data to be written to the pickle file.
+    - file_path (str): The path to the output pickle file.
+
+    Returns:
+    None
+    """
+    with open(file_path, "wb") as file:
         pickle.dump(data, file)
+
 
 # Read pickle
 def read_pickle(file_path):
-    with open(file_path, 'rb') as file:
+    """
+    Reads data from a pickle file.
+
+    Parameters:
+    - file_path (str): The path to the input pickle file.
+
+    Returns:
+    The deserialized data read from the pickle file.
+    """
+    with open(file_path, "rb") as file:
         data = pickle.load(file)
     return data

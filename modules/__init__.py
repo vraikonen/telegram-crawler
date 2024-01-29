@@ -7,3 +7,5 @@ from modules.main_crawler import (
     get_messages,
 )
 from modules.alarm import send_email
+
+from modules.chat_processing_logic import process_chats

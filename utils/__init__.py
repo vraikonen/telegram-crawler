@@ -1,5 +1,6 @@
 from utils.reading_config import reading_config
 from utils.authorization_check import authorize_client
+from utils.authorization_check import authorize_clients
 from utils.logging import logging_crawler
 from utils.file_io import DateTimeEncoder
 from utils.file_io import save_level_data
