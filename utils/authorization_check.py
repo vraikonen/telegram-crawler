@@ -47,7 +47,7 @@ async def authorize_clients(client, client_details):
                     await client.sign_in(password=input("Password: "))
 
             me = await client.get_me()
-            print("Authorization finished. Disconnecting...")
+            print("Authorization successfully finished.")
             client.disconnect()
             # me = await authorize_client(client, client_details[client])
     except Exception as e:
