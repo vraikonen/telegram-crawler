@@ -226,6 +226,7 @@ async def get_participants(client, chat, participants_collection):
             participant_data["chat_id"] = chat
             all_participants.append(participant_data)
         offset += len(participants.users)
+    print(f"Number of collected participants: {len(all_participants)}")
 
     await write_data(all_participants, participants_collection)
 
@@ -326,7 +327,7 @@ async def get_messages(client, chat, messages_collection):
         print(
             "ID of the last collected message:",
             offset_id,
-            "; Total Collected Messages:",
+            "; Total collected messages:",
             total_messages,
         )
         history = await client(
