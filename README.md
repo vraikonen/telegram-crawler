@@ -167,7 +167,7 @@ python main.py
 4. Upon executing the script for the first time and each time a new Telegram account has been added, you will be asked to provide the phone number linked to your account. If you're initializing multiple accounts, the details of the account undergoing authorization will be displayed in the terminal. Simply copy and paste the phone number. Subsequently, an authorization check will be sent to your Telegram account in the form of a message. The terminal will prompt you to enter the received code.
 
 ### Restart of the script
-The script stores information about chats from the current iteration and iteration number in the `temp_var` folder located in the project's root directory. This functionality allows the script to resume from where it left off. Therefore, if the user intends to modify the `input_chats.txt` file and rerun the script with a new set of channels, they should delete the `temp_var` folder. Additionally, to maintain a consistent workflow, the user should update the database name in the `config-database-script-params.ini` file in order to create new database for the new set of input chats.
+The script stores information about chats from the current iteration and iteration number in the `temp_var_{database name}` folder located in the project's root directory. This functionality allows the script to resume from where it left off. Therefore, if the user intends to modify the `input_chats.txt` file and rerun the script with a new set of channels, all they need to do is to update the database name in the `config-database-script-params.ini` file. User can always keep `temp_var_{database name}` folder and rerun the script where it stopped last time by updating the name of database.
 
 
 <!-- Code explanation -->
