@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from telethon import errors
+from telethon.tl import types
 
 from modules.main_crawler import (
     get_entity,
@@ -70,7 +71,8 @@ async def process_chats(
         await queue.put("Fake entity to inform there are no entities left")
         while True:
             entity = await queue.get()  # Get an entity from the queue
-            print(f"Processing entity: {entity}...")
+            print("-" * 30)
+            print(f"Processing Entity: {entity}")
             if entity == "Fake entity to inform there are no entities left":
                 break  # No more entities to process
 
@@ -80,6 +82,19 @@ async def process_chats(
                 logging.info(
                     f"Current processing chat is: {current_chat.id} {client_details[client]}"
                 )
+                # Check if the entity is User type
+                if isinstance(current_chat, types.User):
+                    write_processed(
+                        processed_chats_collection,
+                        iteration_num,
+                        entity,
+                        None,
+                        type="user",
+                        error=None,
+                    )
+                    logging.info(f"Current processing chat is of a User type.")
+                    continue
+
                 consecutive_errors = 0  # Reset error count
             except errors.FloodWaitError as e:
                 await queue.put(entity)
@@ -91,12 +106,16 @@ async def process_chats(
                 # Await FloodWaitError, exit the task if other clients are out
                 start_time = asyncio.get_event_loop().time()
                 while asyncio.get_event_loop().time() - start_time < (e.seconds + 60):
-                    print("Checking...")
+                    print(
+                        "Checking if other clients are ready for the next iteration..."
+                    )
                     if any(
                         value[2] == "Disconnected" for value in client_details.values()
                     ):
                         break
-                    print("No need to exit the loop.")
+                    print(
+                        "No need to exit the loop. There are still chats in the current iteration. Next check in 15 minutes."
+                    )
                     await asyncio.sleep(900)
 
                 client_details[client][2] = "Connected"
@@ -110,6 +129,7 @@ async def process_chats(
                     entity,
                     None,
                     type="invalid_entity",
+                    error=str(e),
                 )
                 # Calculate the delay time based on the consecutive error count
                 delay_time = min(
@@ -133,6 +153,7 @@ async def process_chats(
                     entity,
                     current_chat.id,
                     type="invalid_chat",
+                    error=str(e),
                 )
                 continue
 
@@ -151,9 +172,17 @@ async def process_chats(
             )
             await main_get_participants(chat_id, client, participants_collection)
 
+            # Get username if the initial entity was ID
+            if str(entity).isdigit():
+                entity = current_chat.username
             # Mark chat as processed
             write_processed(
-                processed_chats_collection, iteration_num, entity, chat_id, type="valid"
+                processed_chats_collection,
+                iteration_num,
+                entity,
+                chat_id,
+                type="valid",
+                error=None,
             )
 
         client.disconnect()

@@ -120,7 +120,7 @@ def create_index(collection, index):
         logging.error(f"Error creating index in {collection}: {str(e)}")
 
 
-def write_processed(collection, iteration_num, entity, chat_id, type):
+def write_processed(collection, iteration_num, entity, chat_id, type, error):
     """
     Writes processed chat to a MongoDB collection.
 
@@ -140,9 +140,10 @@ def write_processed(collection, iteration_num, entity, chat_id, type):
     collection.insert_one(
         {
             "iteration_num": iteration_num,
-            "type": type,
             "username": entity,
             "chat_id": chat_id,
+            "type": type,
+            "error": error,
         }
     )
 
@@ -211,6 +212,7 @@ async def get_participants(client, chat, participants_collection):
     offset = 0
     all_participants = []
 
+    print("Retrieving participants...")
     while True:
         participants = await client(
             GetParticipantsRequest(
@@ -321,7 +323,12 @@ async def get_messages(client, chat, messages_collection):
     }
 
     while True:
-        print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
+        print(
+            "ID of the last collected message:",
+            offset_id,
+            "; Total Collected Messages:",
+            total_messages,
+        )
         history = await client(
             GetHistoryRequest(
                 peer=chat,

@@ -25,7 +25,7 @@ async def main_entry_point():
     if os.path.exists("temp_var/entities.pickle"):
         entities = read_pickle("temp_var/entities.pickle")
     else:
-        entities = read_channels_from_file("input_chats.txt")
+        entities = read_channels_from_file("config/input_chats.txt")
         entities = [
             word.casefold() if isinstance(word, str) else word for word in entities
         ]
@@ -50,6 +50,10 @@ async def main_entry_point():
         for document in cursor:
             processed_chats_list.append(document["chat_id"])
             processed_chats_list.append(document["username"])
+        processed_chats_list = [
+            word.casefold() if isinstance(word, str) else word
+            for word in processed_chats_list
+        ]
         processed_chats_list = list(set(processed_chats_list))
 
         # Skip entities if they were processed in the previous iterations

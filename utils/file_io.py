@@ -3,6 +3,7 @@ import pickle
 
 from datetime import date, datetime
 
+
 # Functions to parse json date
 class DateTimeEncoder(json.JSONEncoder):
     def default(self, o):
