@@ -22,23 +22,23 @@ from modules.chat_processing_logic import process_chats
 
 async def main_entry_point():
     # Reading chats from a text file or from the last iteration
-    if os.path.exists("temp_var/entities.pickle"):
-        entities = read_pickle("temp_var/entities.pickle")
+    if os.path.exists(f"{temp_var}/entities.pickle"):
+        entities = read_pickle(f"{temp_var}/entities.pickle")
     else:
         entities = read_channels_from_file("config/input_chats.txt")
         entities = [
             word.casefold() if isinstance(word, str) else word for word in entities
         ]
         entities = list(set(entities))
-        write_pickle(entities, "temp_var/entities.pickle")
+        write_pickle(entities, f"{temp_var}/entities.pickle")
 
     for client in clients:
         await authorize_clients(client, client_details)
 
     # Initialize iteration number, define processing time
     iteration_num = 1
-    if os.path.exists("temp_var/iteration_num.pickle"):
-        iteration_num = read_pickle("temp_var/iteration_num.pickle")
+    if os.path.exists(f"{temp_var}/iteration_num.pickle"):
+        iteration_num = read_pickle(f"{temp_var}/iteration_num.pickle")
     end_time = (
         time.time() + int(max_run_time) * 60
     )  # Set the duration in config-database
@@ -106,11 +106,11 @@ async def main_entry_point():
             word.casefold() if isinstance(word, str) else word for word in all_mentions
         ]
         entities = list(set(all_mentions))
-        write_pickle(entities, "temp_var/entities.pickle")
+        write_pickle(entities, f"{temp_var}/entities.pickle")
 
         # Itertion number for the next full iteration is +1
         iteration_num += 1
-        write_pickle(iteration_num, "temp_var/iteration_num.pickle")
+        write_pickle(iteration_num, f"{temp_var}/iteration_num.pickle")
         if iteration_num == int(max_iterations):
             break
 
@@ -119,9 +119,6 @@ if __name__ == "__main__":
     # Initiate logging, set the custom exception hook
     logging_crawler()
     sys.excepthook = custom_exception_hook
-
-    # Create the folder for the files created after the first initialization
-    os.makedirs("temp_var", exist_ok=True)
 
     # Read Configs and create Telegram client objects (no conenction yet)
     clients, client_details = initialize_clients()
@@ -163,6 +160,10 @@ if __name__ == "__main__":
     create_index(messages_collection, index_messages1)
     create_index(messages_collection, index_messages2)
     create_index(participants_collection, index_participants)
+    
+    # Create the folder for the files created after the first initialization
+    temp_var = f"temp_var_{database}"
+    os.makedirs(temp_var, exist_ok=True)
 
     # Run the asynchronous event loop
     asyncio.run(main_entry_point())
