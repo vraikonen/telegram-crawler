@@ -164,3 +164,6 @@ cython_debug/
 *.pickle
 Pipfile
 bastiaugen.session
+
+token.json
+client_secret_458200893282-ac3uhjq1nl9tuufdcsk7osnsbppuh9re.apps.googleusercontent.com.json
