@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://git.sbg.ac.at/geo-social-analytics/geo-social-media/telegram-crawler">
+  <a href="https://github.com/vraikonen/telegram-crawler>
     <img src="img/icon.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -13,14 +13,14 @@
   <p align="center">
     This is a Python script that utilizes Telethon library to process chats from Telegram. It fetches information about the chats, such as chat details, participants, messages, and chat network, and saves the data to MongoDB database for the further analysis.
     <br />
-    <a href="https://git.sbg.ac.at/geo-social-analytics/geo-social-media/telegram-crawler"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/vraikonen/telegram-crawler"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://git.sbg.ac.at/geo-social-analytics/geo-social-media/telegram-crawler">View Demo</a>
+    <a href="https://github.com/vraikonen/telegram-crawler">View Demo</a>
     ·
-    <a href="https://git.sbg.ac.at/geo-social-analytics/geo-social-media/telegram-crawler/-/issues">Report Bug</a>
+    <a href="https://github.com/vraikonen/telegram-crawler/issues">Report Bug</a>
     ·
-    <a href="https://git.sbg.ac.at/geo-social-analytics/geo-social-media/telegram-crawler/-/issues">Request Feature</a>
+    <a href="https://github.com/vraikonen/telegram-crawler/issues">Request Feature</a>
   </p>
 </div>
 
@@ -213,7 +213,7 @@ As soon as one client hits rate limits, script puts it to sleep for the amount o
 
 <!-- DB Data Structure -->
 ## DB Data Structure
-Database consists of 4 collections. Example of a document for each collection is <a href="https://git.sbg.ac.at/geo-social-analytics/geo-social-media/telegram-crawler/-/tree/main/database_samples">here</a> (on gitlab) or [here](./database_samples) (if you cloned the repository to your local machine).
+Database consists of 4 collections. Example of a document for each collection is <a href="https://github.com/vraikonen/telegram-crawler/database_samples">here</a> (on gitlab) or [here](./database_samples) (if you cloned the repository to your local machine).
 
 <div align="center">
   <img src="img/db_diagram.png" alt="db_diagram">
@@ -223,13 +223,13 @@ There is also another, fifth collection, used to track validity of the processed
 
 <!-- Queries example and tips -->
 ## Queries example and tips
-Check notebooks with tips and examples on how to query data retrieved from Telegram <a href="https://git.sbg.ac.at/geo-social-analytics/geo-social-media/telegram-crawler/-/tree/main/queries">here</a> (on gitlab) or [here](./queries) (if you cloned the repository to your local machine).
+Check notebooks with tips and examples on how to query data retrieved from Telegram <a href="https://github.com/vraikonen/telegram-crawler/queries">here</a> (on gitlab) or [here](./queries) (if you cloned the repository to your local machine).
 
 
 <!-- Suggestions and Issues -->
 ## Feature Requests and Bug Reports
 
-See the [open issues](https://git.sbg.ac.at/geo-social-analytics/geo-social-media/telegram-crawler/-/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/vraikonen/telegram-crawler/issues) for a full list of proposed features (and known issues).
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
